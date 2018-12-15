@@ -1,0 +1,6 @@
+D:\KTANE modding\Discord Rich Presence\Assets\Plugins\Managed\RichPresenceAssembly.dll
+D:\KTANE modding\Discord Rich Presence\Assets\Plugins\Managed\RichPresenceAssembly.pdb
+D:\KTANE modding\Discord Rich Presence\RichPresenceAssembly\obj\Debug\RichPresenceAssembly.csproj.CoreCompileInputs.cache
+D:\KTANE modding\Discord Rich Presence\RichPresenceAssembly\obj\Debug\RichPresenceAssembly.dll
+D:\KTANE modding\Discord Rich Presence\RichPresenceAssembly\obj\Debug\RichPresenceAssembly.pdb
+D:\KTANE modding\Discord Rich Presence\RichPresenceAssembly\obj\Debug\RichPresenceAssembly.csprojAssemblyReference.cache
