@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Rich Presence", "Discord Rich Presence.csproj", "{FB3D9200-0220-A244-5ED4-9C3AB4070286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Rich Presence.Editor", "Discord Rich Presence.Editor.csproj", "{7755988E-C0A0-00BB-C624-BD041B077ED3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB3D9200-0220-A244-5ED4-9C3AB4070286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB3D9200-0220-A244-5ED4-9C3AB4070286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB3D9200-0220-A244-5ED4-9C3AB4070286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB3D9200-0220-A244-5ED4-9C3AB4070286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7755988E-C0A0-00BB-C624-BD041B077ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7755988E-C0A0-00BB-C624-BD041B077ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7755988E-C0A0-00BB-C624-BD041B077ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7755988E-C0A0-00BB-C624-BD041B077ED3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -129,6 +129,9 @@ public class AssetBundler
             //Copy any other non-Editor managed assemblies to the output folder
             bundler.CopyManagedAssemblies();
 
+			//Copy discord dlls
+	        bundler.CopyDiscordDlls();
+
             //Create the modInfo.json file and copy the preview image if available
             bundler.CreateModInfo();
 
@@ -467,6 +470,17 @@ public class AssetBundler
         }
     }
 
+	/// <summary>
+	/// Copies the Discord Rich Presence API dlls to the OUTPUT_FOLDER.
+	/// </summary>
+	protected void CopyDiscordDlls()
+	{
+		if (Directory.Exists("RichPresenceAssembly/dlls"))
+		{
+			DirectoryCopyDLLs("RichPresenceAssembly/dlls", outputFolder + "/dlls", true);
+		}
+	}
+
     /// <summary>
     /// Copies the modSettings.json file from Assets to the OUTPUT_FOLDER.
     /// </summary>
@@ -488,7 +502,46 @@ public class AssetBundler
         }
     }
 
-    /// <summary>
+	/// <summary>
+	/// Helper method to copy directory
+	/// </summary>
+	private static void DirectoryCopyDLLs(string sourceDirName, string destDirName, bool copySubDirs)
+	{
+		// Get the subdirectories for the specified directory.
+		DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+		if (!dir.Exists)
+		{
+			throw new DirectoryNotFoundException(
+				"Source directory does not exist or could not be found: "
+				+ sourceDirName);
+		}
+
+		DirectoryInfo[] dirs = dir.GetDirectories();
+		// If the destination directory doesn't exist, create it.
+		if (!Directory.Exists(destDirName))
+		{
+			Directory.CreateDirectory(destDirName);
+		}
+
+		// Get the files in the directory and copy them to the new location.
+		FileInfo[] files = dir.GetFiles();
+		foreach (FileInfo file in files)
+		{
+			string temppath = Path.Combine(destDirName, file.Name);
+			file.CopyTo(temppath, false);
+		}
+
+		// If copying subdirectories, copy them and their contents to new location.
+		if (!copySubDirs) return;
+		foreach (DirectoryInfo subdir in dirs)
+		{
+			string temppath = Path.Combine(destDirName, subdir.Name);
+			DirectoryCopyDLLs(subdir.FullName, temppath, true);
+		}
+	}
+
+	/// <summary>
     /// Helper method to copy directory
     /// </summary>
     private static void DirectoryCopyPDFs(string sourceDirName, string destDirName, bool copySubDirs)

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114458017079784908}
   - component: {fileID: 114936536451454004}
   - component: {fileID: 114903089766865802}
+  - component: {fileID: 114934819641040202}
   m_Layer: 0
   m_Name: DiscordRpc
   m_TagString: Untagged
@@ -62,6 +63,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1551719263, guid: 7909fdda8eeee3c428e9316bc5bf68fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114934819641040202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1813439392597788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2144496390, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114936536451454004
