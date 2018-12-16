@@ -47,8 +47,9 @@ namespace RichPresenceAssembly
 
 		private void Awake()
 		{
-			string path = ModManager.Instance.InstalledModInfos.First(x => x.Value.ID == "DiscordRichPresence")
+			string path = ModManager.Instance.InstalledModInfos.First(x => x.Value.ID == "DiscordRichPresence" || x.Value.SteamInfo.PublishedFileID == 1593077929)
 				.Value.FilePath;
+
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (Application.platform)
 			{
