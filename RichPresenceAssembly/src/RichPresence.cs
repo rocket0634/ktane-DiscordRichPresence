@@ -41,14 +41,17 @@ namespace RichPresenceAssembly
 		private void OnDisable()
 		{
 			DiscordRpc.Shutdown();
-			// ReSharper disable once DelegateSubtraction
+			// ReSharper disable DelegateSubtraction
 			_gameInfo.OnStateChange -= StateChange;
+			_bombInfo.OnBombExploded -= BombExploded;
+			// ReSharper restore DelegateSubtraction
 		}
 
 		private void Awake()
 		{
-			string path = ModManager.Instance.InstalledModInfos.First(x => x.Value.ID == "DiscordRichPresence" || x.Value.SteamInfo.PublishedFileID == 1593077929)
-				.Value.FilePath;
+			string path = ModManager.Instance.InstalledModInfos
+				.Where(x => x.Value.ID == "DiscordRichPresence" || x.Value.SteamInfo.PublishedFileID == 1593077929)
+				.Select(x => x.Key).First();
 
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (Application.platform)
@@ -76,7 +79,7 @@ namespace RichPresenceAssembly
 					break;
 				case RuntimePlatform.LinuxPlayer:
 					File.Copy(path + "\\dlls\\libdiscord-rpc.so",
-						Application.dataPath + "\\Mono\\libdiscord-rpc.so", true);
+						Application.dataPath + "\\Mono\\x86_64\\libdiscord-rpc.so", true);
 					break;
 				default:
 					throw new PlatformNotSupportedException("The OS is not windows, linux, or mac, what kind of system is this?");
@@ -87,6 +90,7 @@ namespace RichPresenceAssembly
 
 		private void StateChange(KMGameInfo.State state)
 		{
+			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (state)
 			{
 				case KMGameInfo.State.Setup:
