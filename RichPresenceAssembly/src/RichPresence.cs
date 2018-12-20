@@ -48,7 +48,9 @@ namespace RichPresenceAssembly
 			// ReSharper restore DelegateSubtraction
 		}
 
-		private void Awake()
+        public string CombineMultiple(params string[] paths) => paths.Aggregate(Path.Combine);
+
+        private void Awake()
 		{
 			string path = ModManager.Instance.GetEnabledModPaths(ModInfo.ModSourceEnum.Local)
 				              .FirstOrDefault(x => Directory.GetFiles(x, "RichPresenceAssembly.dll").Any()) ??
@@ -76,12 +78,14 @@ namespace RichPresenceAssembly
 					}
 					break;
 				case RuntimePlatform.OSXPlayer:
-					File.Copy(path + "\\dlls\\discord-rpc.bundle",
-						Application.dataPath + "\\Mono\\discord-rpc.bundle", true);
+                    var dest = CombineMultiple(Application.dataPath, "Frameworks", "MonoEmbedRuntime", "osx");
+                    if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
+					File.Copy(CombineMultiple(path, "dlls", "discord-rpc.bundle"),
+                        Path.Combine(dest, "libdiscord-rpc.dylib"), true);
 					break;
 				case RuntimePlatform.LinuxPlayer:
-					File.Copy(path + "\\dlls\\libdiscord-rpc.so",
-						Application.dataPath + "\\Mono\\x86_64\\libdiscord-rpc.so", true);
+					File.Copy(CombineMultiple(path, "dlls", "libdiscord-rpc.so"),
+						CombineMultiple(Application.dataPath, "Mono", IntPtr.Size == 8 ? "x86_64" : "x86", "libdiscord-rpc.so"), true);
 					break;
 				default:
 					throw new PlatformNotSupportedException("The OS is not windows, linux, or mac, what kind of system is this?");
