@@ -78,14 +78,24 @@ namespace RichPresenceAssembly
 					}
 					break;
 				case RuntimePlatform.OSXPlayer:
-                    var dest = CombineMultiple(Application.dataPath, "Frameworks", "MonoEmbedRuntime", "osx");
+					string dest = CombineMultiple(Application.dataPath, "Frameworks", "MonoEmbedRuntime", "osx");
                     if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
 					File.Copy(CombineMultiple(path, "dlls", "discord-rpc.bundle"),
                         Path.Combine(dest, "libdiscord-rpc.dylib"), true);
 					break;
 				case RuntimePlatform.LinuxPlayer:
-					File.Copy(CombineMultiple(path, "dlls", "libdiscord-rpc.so"),
-						CombineMultiple(Application.dataPath, "Mono", IntPtr.Size == 8 ? "x86_64" : "x86", "libdiscord-rpc.so"), true);
+					switch (IntPtr.Size)
+					{
+						case 4:
+							throw new PlatformNotSupportedException("32 bit linux is not supported.");
+						case 8:
+							File.Copy(CombineMultiple(path, "dlls", "libdiscord-rpc.so"),
+								CombineMultiple(Application.dataPath, "Mono", "x86_64", "libdiscord-rpc.so"), true);
+							break;
+						default:
+							throw new PlatformNotSupportedException("IntPtr size is not 4 or 8, what kind of system is this?");
+					}
+
 					break;
 				default:
 					throw new PlatformNotSupportedException("The OS is not windows, linux, or mac, what kind of system is this?");
