@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Assets.Scripts.Missions;
+using Assets.Scripts.Mods;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -49,9 +50,10 @@ namespace RichPresenceAssembly
 
 		private void Awake()
 		{
-			string path = ModManager.Instance.InstalledModInfos
-				.Where(x => x.Value.ID == "DiscordRichPresence" || x.Value.SteamInfo.PublishedFileID == 1593077929)
-				.Select(x => x.Key).First();
+			string path = ModManager.Instance.GetEnabledModPaths(ModInfo.ModSourceEnum.Local)
+				              .FirstOrDefault(x => Directory.GetFiles(x, "RichPresenceAssembly.dll").Any()) ??
+			              ModManager.Instance.GetEnabledModPaths(ModInfo.ModSourceEnum.SteamWorkshop)
+				              .First(x => Directory.GetFiles(x, "RichPresenceAssembly.dll").Any());
 
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (Application.platform)
