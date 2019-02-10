@@ -127,6 +127,10 @@ namespace RichPresenceAssembly
 					Bombs.Clear();
 					_factoryCheckComplete = false;
 					break;
+				case KMGameInfo.State.Transitioning:
+					StopCoroutine(WaitForBomb());
+					StopCoroutine(FactoryCheck());
+					break;
 			}
 		}
 
@@ -167,7 +171,7 @@ namespace RichPresenceAssembly
 				Debug.Log(GameplayState.MissionToLoad);
 				_missionName = GameplayState.MissionToLoad == FreeplayMissionGenerator.FREEPLAY_MISSION_ID
 					? "Freeplay"
-					: SceneManager.Instance.GameplayState.Mission.DisplayName == "Custom Freeplay" //BombCreator
+					: SceneManager.Instance.GameplayState.Mission.DisplayName == "Custom Freeplay" //BombCreator/Dynamic mission generator
 						? "Freeplay"
 						: SceneManager.Instance.GameplayState.Mission.DisplayName;
 			}
