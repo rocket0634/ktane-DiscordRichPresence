@@ -25,6 +25,7 @@ namespace RichPresenceAssembly
 		private List<Bomb> Bombs = new List<Bomb>();
 		private bool _zenMode;
 		private bool _timeMode;
+		private bool _steadyMode;
 
 		private void OnEnable()
 		{
@@ -204,6 +205,7 @@ namespace RichPresenceAssembly
 						{
 							_timeMode = mode == 1;
 							_zenMode = mode == 2;
+							_steadyMode = mode == 3;
 						}
 					}
 				}
@@ -211,7 +213,7 @@ namespace RichPresenceAssembly
 
 			yield return new WaitUntil(() => Bombs[0].GetTimer().IsUpdating);
 			presence.details = _missionName + (factory ? " | Factory" + (Infinite ? " Infinite" : "") + " Mode" : "") +
-							   (_zenMode ? " | Zen Mode" : "") + (_timeMode ? " | Time Mode" : "");
+							   (_zenMode ? " | Zen Mode" : "") + (_timeMode ? " | Time Mode" : "") + (_steadyMode ? " | Steady Mode" : "");
 			if (!_zenMode)
 			{
 				DateTime time = DateTime.UtcNow +
