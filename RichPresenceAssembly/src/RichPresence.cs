@@ -172,9 +172,9 @@ namespace RichPresenceAssembly
 				Debug.Log(GameplayState.MissionToLoad);
 				_missionName = GameplayState.MissionToLoad == FreeplayMissionGenerator.FREEPLAY_MISSION_ID
 					? "Freeplay"
-					: SceneManager.Instance.GameplayState.Mission.DisplayName == "Custom Freeplay" //BombCreator/Dynamic mission generator
+					: Localization.GetLocalizedString(SceneManager.Instance.GameplayState.Mission.DisplayNameTerm) == "Custom Freeplay" //BombCreator/Dynamic mission generator
 						? "Freeplay"
-						: SceneManager.Instance.GameplayState.Mission.DisplayName;
+						: Localization.GetLocalizedString(SceneManager.Instance.GameplayState.Mission.DisplayNameTerm);
 			}
 			else
 				_missionName = "Freeplay";
