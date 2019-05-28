@@ -26,6 +26,7 @@ namespace RichPresenceAssembly
 		private bool _zenMode;
 		private bool _timeMode;
 		private bool _steadyMode;
+		private bool _vsMode;
         private int moduleCount, modulesRemain;
 
 		private void OnEnable()
@@ -189,6 +190,9 @@ namespace RichPresenceAssembly
 				PropertyInfo timeModeInfo =
 					otherModesType.GetProperty("TimeModeOn", BindingFlags.Public | BindingFlags.Static);
 				_timeMode = (bool?)timeModeInfo?.GetValue(null, null) ?? false;
+				PropertyInfo vsModeInfo =
+					otherModesType.GetProperty("VSModeOn", BindingFlags.Public | BindingFlags.Static);
+				_vsMode = (bool?)vsModeInfo?.GetValue(null, null) ?? false;
 			}
 			else
 			{
@@ -214,7 +218,8 @@ namespace RichPresenceAssembly
 
 			yield return new WaitUntil(() => Bombs[0].GetTimer().IsUpdating);
 			presence.details = _missionName + (factory ? " | Factory" + (Infinite ? " Infinite" : "") + " Mode" : "") +
-							   (_zenMode ? " | Zen Mode" : "") + (_timeMode ? " | Time Mode" : "") + (_steadyMode ? " | Steady Mode" : "");
+							   (_zenMode ? " | Zen Mode" : "") + (_timeMode ? " | Time Mode" : "") + (_vsMode ? " | Versus Mode" : "")
+							   + (_steadyMode ? " | Steady Mode" : "");
 			if (!_zenMode)
 			{
 				DateTime time = DateTime.UtcNow +
@@ -228,7 +233,7 @@ namespace RichPresenceAssembly
 				presence.startTimestamp = unixTimestamp;
 			}
             modulesRemain = moduleCount = Bombs[0].BombComponents.Count(x => x.IsSolvable);
-            presence.state = string.Format("Modules remaining: ({0} of {1})", modulesRemain, moduleCount);
+            presence.state = $"Modules remaining: ({modulesRemain} of {moduleCount})";
             DiscordRpc.UpdatePresence(presence);
 		}
 
@@ -237,8 +242,7 @@ namespace RichPresenceAssembly
             if (component.IsSolvable)
             {
                 modulesRemain--;
-                if (modulesRemain > 0) presence.state = string.Format("Modules remaining: ({0} of {1})", modulesRemain, moduleCount);
-                else presence.state = "Modules remaining: None";
+                presence.state = modulesRemain > 0 ? $"Modules remaining: ({modulesRemain} of {moduleCount})" : "Modules remaining: None";
                 DiscordRpc.UpdatePresence(presence);
             }
 			if (!_timeMode) return false;
