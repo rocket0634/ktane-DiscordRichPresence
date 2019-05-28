@@ -26,6 +26,7 @@ namespace RichPresenceAssembly
 		private bool _zenMode;
 		private bool _timeMode;
 		private bool _steadyMode;
+        private int moduleCount, modulesRemain;
 
 		private void OnEnable()
 		{
@@ -137,7 +138,7 @@ namespace RichPresenceAssembly
 
 		private void SetupHandler()
 		{
-			presence.endTimestamp = presence.partyMax = presence.partySize = 0;
+			presence.endTimestamp = 0;
 			presence.startTimestamp = 0;
 			presence.state = null;
 			presence.details = "Setting up";
@@ -146,7 +147,7 @@ namespace RichPresenceAssembly
 
 		private void PostGameHandler()
 		{
-			presence.endTimestamp = presence.partyMax = presence.partySize = 0;
+			presence.endTimestamp = 0;
 			presence.startTimestamp = 0;
 			presence.state = null;
 			presence.details = _missionName + " | " + (_bombExploded ? "Exploded" : "Solved");
@@ -226,15 +227,20 @@ namespace RichPresenceAssembly
 				long unixTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 				presence.startTimestamp = unixTimestamp;
 			}
-			presence.state = "Modules remaining: ";
-			presence.partySize = presence.partyMax = Bombs[0].BombComponents.Count(x => x.IsSolvable);
-			DiscordRpc.UpdatePresence(presence);
+            modulesRemain = moduleCount = Bombs[0].BombComponents.Count(x => x.IsSolvable);
+            presence.state = string.Format("Modules remaining: ({0} of {1})", modulesRemain, moduleCount);
+            DiscordRpc.UpdatePresence(presence);
 		}
 
 		private bool OnPass(BombComponent component)
 		{
-			presence.partySize--;
-			DiscordRpc.UpdatePresence(presence);
+            if (component.IsSolvable)
+            {
+                modulesRemain--;
+                if (modulesRemain > 0) presence.state = string.Format("Modules remaining: ({0} of {1})", modulesRemain, moduleCount);
+                else presence.state = "Modules remaining: None";
+                DiscordRpc.UpdatePresence(presence);
+            }
 			if (!_timeMode) return false;
 			DateTime time = DateTime.UtcNow +
 							TimeSpan.FromSeconds(Bombs[0].GetTimer().TimeRemaining / Bombs[0].GetTimer().GetRate());
